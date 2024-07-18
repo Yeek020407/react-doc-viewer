@@ -2,6 +2,7 @@ export interface FileLoaderFuncProps {
   documentURI: string;
   signal: AbortSignal;
   fileLoaderComplete: FileLoaderComplete;
+  headers?: Record<string, string>;
 }
 export type FileLoaderComplete = (fileReader?: FileReader) => void;
 export type FileLoaderFunction = (props: FileLoaderFuncProps) => void;
@@ -15,10 +16,11 @@ type BaseFileLoaderFunction = (props: BaseFileLoaderFuncOptions) => void;
 const _fileLoader: BaseFileLoaderFunction = ({
   documentURI,
   signal,
+  headers,
   fileLoaderComplete,
   readerTypeFunction,
 }) => {
-  return fetch(documentURI, { signal })
+  return fetch(documentURI, { signal, headers })
     .then(async (res) => {
       const blob = await res.blob();
 
